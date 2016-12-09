@@ -45,8 +45,46 @@ import sys
 # and builds and returns a word/count dict for it.
 # Then print_words() and print_top() can just call the utility function.
 
-###
+""" Return a dict containing words with counts
+"""
+def count_words(filename):
+  # dict used to count word
+  counter = {}
+  f = open(filename, 'r')
+  for line in f:
+    words = line.split() # split without argument will split all whitespace
+    for word in words:
+      word = word.lower()
+      # update counter corresponding to this word
+      if word in counter:
+        counter[word] += 1
+      else:
+        counter[word] = 1
+  f.close()
+  return counter
+  
+""" Print all words with count
+"""
+def print_words(filename):
+  counter = count_words(filename)
+  # sort keys and print output
+  words = sorted(counter.keys())
+  for word in words:
+    print word, counter[word]
 
+def getcount(item):
+  return item[1]
+
+""" Print top 20 most common words
+"""
+def print_top(filename):
+  counter = count_words(filename)
+  # counter.items() is list of tuples containing (key, value)
+  items = sorted(counter.items(), key=getcount, reverse=True)
+  # print the first 20
+  for item in items[:20]:
+    print item[0], item[1] 
+  
 # This basic command line argument parsing code is provided and
 # calls the print_words() and print_top() functions which you must define.
 def main():
